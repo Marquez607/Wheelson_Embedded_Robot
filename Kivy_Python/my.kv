@@ -1,0 +1,155 @@
+#CONSTANTS
+#:set red [1,0,0,1]
+#:set green [0,1,0,1]
+#:set light_grey [211/255,211/255,211/255,1]
+
+WindowManager:
+    MainWindow:
+    SettingsWindow:
+    ScannerWindow:
+
+#stolen code to make a expanding label
+<CustomLabel>:
+    size_hint_y: None
+    size_hint_x: 0.8
+    text_size: self.width, None
+    height: self.texture_size[1]
+
+<MainWindow>:
+    name: "controls"
+
+    #variables 
+    device_label: device_label
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            size_hint_y: 0.1
+            text: "Wheelson Controller\nby Marqueezus"
+
+        #device display
+        Label:
+            id: device_label
+            size_hint_y: 0.1
+            text: root.device_text
+
+        GridLayout:
+            size_hint_y: 0.6
+            cols: 3
+            rows: 3
+
+            #top row
+            Button:
+                background_color: light_grey
+                text: "reserved"
+            Button:
+                background_color: green
+                text: "FORWARD"
+                on_press:root.send_foward()
+            Button:
+                background_color: light_grey
+                text: "reserved"
+
+            #middle row
+            Button:
+                background_color: green
+                text: "TURN LEFT"
+                on_press: root.send_turn_left()
+            Button:
+                background_color: red
+                text: "STOP"
+                on_press: root.send_stop()
+            Button:
+                background_color: green
+                text: "TURN RIGHT"
+                on_press: root.send_turn_right()
+
+            #bottom row
+            Button:
+                background_color: light_grey
+                text: "reserved"
+            Button:
+                background_color: green
+                text: "REVERSE"
+                on_press:root.send_reverse()
+            Button:
+                background_color: light_grey
+                text: "reserved"
+        GridLayout:
+            size_hint_y: 0.2
+            cols: 2
+            
+            Button:
+                text: "Scanner"
+
+                on_release:
+                    app.root.current = "scanner"
+                    root.manager.transition.direction = "right"
+
+            Button: 
+                text: "Settings"
+                
+                on_release: 
+                    app.root.current = "settings" 
+                    root.manager.transition.direction = "left"
+
+<ScanPopup>:
+    Label:
+        text: 'SCANNING...'
+        size_hint: 0.6, 0.2
+
+<ScannerWindow>:
+
+    #variables
+    text_input: text_input
+
+    name: "scanner"
+    GridLayout:
+        cols: 1
+        ScannerPage:
+
+        GridLayout:
+            size_hint_y: 0.1
+            cols: 3
+            rows: 1
+            Label:
+                size_hint_x: 0.2
+                text: "ENTER NUM: "
+
+            TextInput:
+                id: text_input
+                size_hint_x: 0.6
+                text: ""
+
+            Button:
+                size_hint_x: 0.2
+                on_release: root.connect_to_device()
+                text: "CONNECT"
+        
+
+        GridLayout: 
+            size_hint_y: 0.1
+            cols: 2
+            rows: 1
+
+            Button:
+                text: "START SCAN"
+                on_press: root.BT_scan_nearby()
+
+            Button:
+                text: "Go Back"
+                on_release: 
+                    app.root.current = "controls"
+                    root.manager.transition.direction = "left"
+
+
+<SettingsWindow>:
+    name: "settings"
+    Label:
+        text: "Settings"
+    Button:
+        text: "Go Back"
+        on_release: 
+            app.root.current = "controls"
+            root.manager.transition.direction = "right"
