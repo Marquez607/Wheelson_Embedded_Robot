@@ -4,7 +4,7 @@
  * Desc: main program for wheelson robots
  *
  *
- * Importan Hardware Connections
+ * Important Hardware Connections
  *
  * UART2 (used for bluetooth)
  * PD6 - RX
